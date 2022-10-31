@@ -1,5 +1,3 @@
-import { NextFunction } from 'express-serve-static-core'
-import createHttpError from 'http-errors'
 import { newCard } from '../types/interface'
 import { EmailOk, Month } from '../types/enums'
 import { isValidCard } from './isValidCard'
@@ -12,8 +10,8 @@ const isInteger = (num: any): boolean => {
 }
 const isEmail = (email: any): boolean => {
   const expEmail = /\w+@\w+\.+[a-z]/
-  const str: any = email.split('@')[1]
-  if (!expEmail.test(email) || !Object.values(EmailOk).includes(str)) {
+  const emailPlatfrom: any = email.split('@')[1]
+  if (!expEmail.test(email) || !Object.values(EmailOk).includes(emailPlatfrom)) {
     return false
   }
   return true
@@ -27,6 +25,7 @@ const parseEmail = (email: string): string => {
   }
   return email
 }
+
 const parseCCV = (ccv: any): number => {
   const len = ccv.toString().length
   if (!isInteger(ccv) || (len !== 3 && len !== 4)) {
@@ -40,9 +39,9 @@ const parseExpMonth = (month: any): Month => {
 }
 const parseExpYear = (param: any): string => {
   const yearCurrent: number = new Date().getFullYear()
+  const yearOld: boolean = parseInt(param, 10) < yearCurrent
   const yearMax: boolean = parseInt(param, 10) > yearCurrent + 5
-  const yearMin: boolean = parseInt(param, 10) < yearCurrent
-  if (!isInteger(param) || yearMax || yearMin) {
+  if (!isInteger(param) || yearOld || yearMax) {
     throw new Error('Year Incorrect')
   }
   return param
@@ -54,9 +53,7 @@ const parseCard = (card: any): number => {
   return Number(card)
 }
 
-const validateData = (data: any, req: any, next: NextFunction): (
-newCard | null
-) => {
+const validateData = (data: any): newCard | string => {
   try {
     const card: newCard = {
       email: parseEmail(data.email),
@@ -68,9 +65,7 @@ newCard | null
 
     return card
   } catch (err: any) {
-    req.error = createHttpError(400, err.message)
-    next()
-    return null
+    return err.message
   }
 }
 
