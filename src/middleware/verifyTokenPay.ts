@@ -10,8 +10,8 @@ export const verifyTokenPay = (req: Req, _res: Res, next: Next): void => {
   const authorizationHeader: string | undefined = req.headers.authorization
 
   if (authorizationHeader === undefined) {
-    r.error = createHttpError(401)
-    return next()
+    r.error = createHttpError(403)
+    return next('route')
   }
 
   const tkn: string = authorizationHeader.split(' ')[1]
@@ -20,21 +20,22 @@ export const verifyTokenPay = (req: Req, _res: Res, next: Next): void => {
 
   if (splitToken[0] !== 'pk' || splitToken[1] !== 'test') {
     r.error = createHttpError(401, 'token invalido')
-    return next()
+    return next('route')
   }
 
   if (token.length < 16 || token.length > 16) {
     r.error = createHttpError(401, 'token invalido')
-    return next()
+    return next('route')
   }
 
   const characters: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
   for (const chart of token) {
     if (!characters.includes(chart)) {
       r.error = createHttpError(401, 'token invalido')
-      return next()
+      return next('route')
     }
   }
 
+  req.body.token = tkn
   next()
 }
