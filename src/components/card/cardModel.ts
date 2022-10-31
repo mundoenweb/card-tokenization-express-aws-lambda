@@ -13,6 +13,30 @@ async function modelCreateToken (token: string, cardToken: string | undefined) {
   }
 }
 
+async function modelGetCard (token: string): Promise<any> {
+  try {
+    await client.connect()
+    const db = client.db('cards')
+    const cards = db.collection('cards')
+    const data = await cards.findOne({ token })
+    return data !== null ? [data] : []
+  } finally {
+    await client.close()
+  }
+}
+async function deleteCard (token: string): Promise<any> {
+  try {
+    await client.connect()
+    const db = client.db('cards')
+    const cards = db.collection('cards')
+    return await cards.deleteOne({ token })
+  } finally {
+    await client.close()
+  }
+}
+
 export {
-  modelCreateToken
+  modelCreateToken,
+  modelGetCard,
+  deleteCard
 }
