@@ -38,8 +38,39 @@ const createToken = (req: Req, res: Res, next: Next): void => {
       })
   })
 }
-const getCard = (_req: Req, _res: Res): null => {
-  return null
+const getCard = (req: Req, res: Res, next: Next): void => {
+  const { token } = req.body
+
+  models.modelGetCard(token)
+    .then(response => {
+      const msgExpOrNotExist: string = 'La información que busca no existe o a expirado, favor vuelva a intentar con nuevos datos'
+      if (response.length === 0) {
+        helperResponse(res, [], 200, msgExpOrNotExist)
+      }
+
+      const cardToken: string = response[0].cardToken
+
+      jwt.verify(cardToken, SECRET_PASSWORD, (err: any, result: any): void => {
+        if (err !== null) {
+          if (err.message === 'jwt expired') {
+            models.deleteCard(token).then(() => {}).catch(() => { })
+            throw new Error(msgExpOrNotExist)
+          }
+          throw new Error(err.message)
+        }
+
+        const data = { ...result.card }
+        delete data.cvv
+        helperResponse(res, data, 200, 'consulta exitosa')
+      })
+
+      helperResponse(res, cardToken, 200, 'consulta exitosa')
+    })
+    .catch(err => {
+      const r: any = req
+      r.error = createHttpError(400, err.message)
+      next()
+    })
 }
 
 export {
