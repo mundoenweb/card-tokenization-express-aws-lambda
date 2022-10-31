@@ -35,10 +35,7 @@ const parseCCV = (ccv: any): number => {
   return Number(ccv)
 }
 const parseExpMonth = (month: any): Month => {
-  if (isMonth(month)) {
-    console.log('mes llegue')
-    return month
-  }
+  if (isMonth(month)) return month
   throw new Error('Month Incorrect')
 }
 const parseExpYear = (param: any): string => {
