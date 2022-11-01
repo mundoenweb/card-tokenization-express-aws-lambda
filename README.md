@@ -1,8 +1,6 @@
 # tokenizacion tarjeta de credito y debito
 
-- El proyecto esta configurado para usarlo 
-
-# Ejecutar proyecto de forma local
+## Ejecutar proyecto de forma local
 
 - Ejecutar el comando ( npm run install )
 - Ejecutar el comando ( npm run dev ) para correr el proyecto en modo local con expres en el host http://localhost:3467
