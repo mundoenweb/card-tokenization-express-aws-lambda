@@ -22,7 +22,7 @@ export const verifyTokenPay = (req: Req, _res: Res, next: Next): void => {
     return next('route')
   }
 
-  if (token.length < 16 || token.length > 16) {
+  if (token.length !== 16) {
     req.body.error = createHttpError(401, 'token invalido')
     return next('route')
   }
