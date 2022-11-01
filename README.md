@@ -1,7 +1,15 @@
+# tokenizacion tarjeta de credito y debito
+
+- El proyecto esta configurado para usarlo 
+
 # Ejecutar proyecto de forma local
 
 - Ejecutar el comando ( npm run install )
-- Ejecutar el comando ( npm run dev ) para correr el proyecto en modo local
+- Ejecutar el comando ( npm run dev ) para correr el proyecto en modo local con expres en el host http://localhost:3467
+
+## EndPoints
+- /card/token  (POST): debe pasar los datos de la tarjeta e email
+- /card  (GET): debe pasar el token en la cabezera
 
 ## serverless deploy aws Lambda
 
@@ -15,6 +23,5 @@
 - api: https://b1t8yawzti.execute-api.us-east-1.amazonaws.com
 - rutas: - /card/token   - /card
 
-- /card/token  (POST): debe pasar los datos de la tarjeta e email
-- /card  (GET): debe pasar el token en la cabezera
+
 
