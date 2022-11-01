@@ -1,6 +1,6 @@
 // parsea la tarjea con el algoritmo de LUHN
 export const isValidCard = (num: string): boolean => {
-  if (num == null || !Number.isInteger(parseInt(num, 0))) return false
+  if (num === null || num === undefined || !Number.isInteger(parseInt(num, 0))) return false
   if (num.length === 0 || num.length === 14 || num.length === 15) return false
   if (num.length < 13 || num.length > 16) return false
 
