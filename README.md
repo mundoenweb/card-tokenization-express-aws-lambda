@@ -1,16 +1,22 @@
 # tokenizacion tarjeta de credito y debito
 
-## Ejecutar proyecto de forma local
+## Comandos de compilacion y Test 
+
+- utilice el comandp ( npm run tsc ) para compilar en la carpeta build 
+- utilice el comandp ( npm run test ) para ejecutar testing
+
+## Ejecutar proyecto en Entorno local
 
 - Ejecutar el comando ( npm run install )
 - Ejecutar el comando ( npm run dev ) para correr el proyecto en modo local con expres en el host http://localhost:3467
 
-## EndPoints
+### EndPoints
 - /card/token  (POST): debe pasar los datos de la tarjeta e email
 - /card  (GET): debe pasar el token en la cabezera
 
 ## serverless deploy aws Lambda
 
+- utilice el comando ( npm run test)
 - consigure un usuario en aws para subir proyectos a Lambda
 - descargar e instalar la cli de aws (https://aws.amazon.com/es/cli/)
 - configurar sus credenciales de usuario en la cli
