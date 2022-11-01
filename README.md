@@ -1,14 +1,14 @@
 # tokenizacion tarjeta de credito y debito
 
-## Comandos de compilacion y Test 
+- Ejecutar el comando ( npm run install )
 
+## Comandos de compilacion y Test 
 - utilice el comandp ( npm run tsc ) para compilar en la carpeta build 
 - utilice el comandp ( npm run test ) para ejecutar testing
 
 ## Ejecutar proyecto en Entorno local
 
-- Ejecutar el comando ( npm run install )
-- Ejecutar el comando ( npm run dev ) para correr el proyecto en modo local con expres en el host http://localhost:3467
+- Ejecutar el comando ( npm run dev ) para correr el proyecto en modo local con serverless y express en el host http://localhost:3467
 
 ### EndPoints
 - /card/token  (POST): debe pasar los datos de la tarjeta e email
