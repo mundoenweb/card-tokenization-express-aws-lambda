@@ -21,7 +21,7 @@ const isMonth = (param: any): boolean => {
 }
 const parseEmail = (email: string): string => {
   if (!isString(email) || !isEmail(email)) {
-    throw new Error('Email Incorrect')
+    throw new Error('Email incorrect')
   }
   return email
 }
@@ -29,20 +29,20 @@ const parseEmail = (email: string): string => {
 const parseCCV = (ccv: any): number => {
   const len = ccv.toString().length
   if (!isInteger(ccv) || (len !== 3 && len !== 4)) {
-    throw new Error('CCV Incorrect')
+    throw new Error('CCV incorrect')
   }
   return Number(ccv)
 }
 const parseExpMonth = (month: any): Month => {
   if (isMonth(month)) return month
-  throw new Error('Month Incorrect')
+  throw new Error('Month incorrect')
 }
 const parseExpYear = (param: any): string => {
   const yearCurrent: number = new Date().getFullYear()
   const yearOld: boolean = parseInt(param, 10) < yearCurrent
   const yearMax: boolean = parseInt(param, 10) > yearCurrent + 5
   if (!isInteger(param) || yearOld || yearMax) {
-    throw new Error('Year Incorrect')
+    throw new Error('Year incorrect')
   }
   return param
 }
@@ -54,6 +54,12 @@ const parseCard = (card: any): number => {
 }
 
 const validateData = (data: any): newCard | string => {
+  const message = 'Debe enviar todos los datos'
+  if (data === undefined || data === null) return message
+  if (data === '' || data === 0) return message
+  if (typeof data === 'boolean') return message
+  if (typeof data === 'number') return message
+
   try {
     const card: newCard = {
       email: parseEmail(data.email),
