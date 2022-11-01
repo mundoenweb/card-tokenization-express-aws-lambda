@@ -49,8 +49,7 @@ const getCard = (req: Req, res: Res, next: Next): void => {
   models.modelGetCard(token)
     .then((response: any[]) => {
       if (response.length === 0) {
-        helperResponse(res, [], 200, msgExpOrNotExist)
-        return
+        throw new Error(msgExpOrNotExist)
       }
 
       const cardToken: string = response[0].cardToken
