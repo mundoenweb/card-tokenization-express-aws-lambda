@@ -1,8 +1,7 @@
 # tokenizacion tarjeta de credito y debito
 
-- Ejecutar el comando ( npm run install )
-
 ## Comandos de compilacion y Test 
+- Ejecutar el comando ( npm run install )
 - utilice el comando ( npm run tsc ) para compilar en la carpeta build 
 - utilice el comando ( npm run test ) praa ejecutar testing
 
@@ -22,10 +21,14 @@
 }
 ```
 - /  (GET): debe pasar el token en la cabezera
+```json
+{
+    "authorization": "Bearer ClDTOYVIfhdz9mOK",
+}
+```
 
 ## serverless deploy aws Lambda
 
-- utilice el comando ( npm run test)
 - consigure un usuario en aws para subir proyectos a Lambda
 - descargar e instalar la cli de aws (https://aws.amazon.com/es/cli/)
 - configurar sus credenciales de usuario en la cli
@@ -33,8 +36,10 @@
 
 ## api actual corriendo en un servidor aws Lambda
 
-- api: https://b1t8yawzti.execute-api.us-east-1.amazonaws.com
-- rutas: - /card/token   - /card
+- api: https://8pux8afamh.execute-api.us-east-1.amazonaws.com
 
+## Patron de diseño y arquitectura utilizados
 
+- diseño: ninguno
+- arquitectura: REST; Se escogio la arquitectura REST por su fiabilidad, escalabilidad, flexibilidad al momento de desarrollar la aplicacion
 
