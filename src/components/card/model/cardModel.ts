@@ -1,5 +1,5 @@
 import { Collection, Db, WithId } from 'mongodb'
-import { client } from '../../config/connection'
+import { client } from '../../../config/connection'
 
 export const saveCardModel = async (token: string, cardToken: string): Promise<void> => {
   try {
