@@ -5,7 +5,7 @@ import {
   Response as Res
 } from 'express'
 
-export const verifyTokenPay = (req: Req, _res: Res, next: Next): void => {
+export const verifyToken = (req: Req, _res: Res, next: Next): void => {
   const authorizationHeader: string | undefined = req.headers.authorization
   const error: string = 'Acceso no autorizado'
   const expToken: RegExp = /^[A-Za-z0-9]+$/
