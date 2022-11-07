@@ -1,85 +1,112 @@
 import { app } from '../../../index'
 import supertest from 'supertest'
+import * as helper from './helperTest'
 
 const api = supertest(app)
 
 jest.setTimeout(100000)
 
-describe.skip('/card/token', () => {
-  test('probando que guarde las tarjetas y genere el token', async () => {
-    const card = {
-      email: 'rommer@hotmail.com',
-      ccv: '123',
-      expiration_month: '12',
-      expiration_year: '2027',
-      card_number: '4551038338995199'
-    }
-
+describe('probando ruta "/":GET para generar token y guardar tarjeta', () => {
+  test('probando que guarde las tarjeta y genere el token', async () => {
     const { body } = await api
-      .post('/card/token')
-      .send(card)
+      .post('/')
+      .send(helper.cardValid)
       .expect(201)
       .expect('Content-Type', 'application/json; charset=utf-8')
 
     expect(body.message).toContain('Token creado exitosamente')
-    expect(body.data.token).toContain('pk_test_')
-    expect(body.data.token).toHaveLength(24)
+    expect(body.data.token).toMatch(helper.expToken)
   })
-
-  test('probando ingresar algun dato invalido', async () => {
-    const card = {
-      email: 'rommer@hotmail.coml',
-      ccv: '123',
-      expiration_month: '12',
-      expiration_year: '2027',
-      card_number: '4551038338995199'
-    }
-
-    await api
-      .post('/card/token')
-      .send(card)
+  test('probando sin enviar ningún dato', async () => {
+    const { body } = await api
+      .post('/')
+      .send({})
       .expect(400)
       .expect('Content-Type', 'application/json; charset=utf-8')
+
+    expect(body.message).toContain('Debe enviar todos los datos')
   })
-  test('probando ingresar sin enviar datos', async () => {
-    await api
-      .post('/card/token')
+  test('probando con email invalido', async () => {
+    const { body } = await api
+      .post('/')
+      .send(helper.cardEmailInvalid)
       .expect(400)
       .expect('Content-Type', 'application/json; charset=utf-8')
+
+    expect(body.message).toContain('Email incorrect')
+  })
+  test('probando con cvv invalido', async () => {
+    const { body } = await api
+      .post('/')
+      .send(helper.cardCVVInvalid)
+      .expect(400)
+      .expect('Content-Type', 'application/json; charset=utf-8')
+
+    expect(body.message).toContain('CVV incorrect')
+  })
+  test('probando con mes invalido', async () => {
+    const { body } = await api
+      .post('/')
+      .send(helper.cardMonthInvalid)
+      .expect(400)
+      .expect('Content-Type', 'application/json; charset=utf-8')
+
+    expect(body.message).toContain('Month incorrect')
+  })
+  test('probando con año invalido', async () => {
+    const { body } = await api
+      .post('/')
+      .send(helper.cardYearInvalid)
+      .expect(400)
+      .expect('Content-Type', 'application/json; charset=utf-8')
+
+    expect(body.message).toContain('Year incorrect')
+  })
+  test('probando con numero de tarjeta invalido', async () => {
+    const { body } = await api
+      .post('/')
+      .send(helper.cardNumberInvalid)
+      .expect(400)
+      .expect('Content-Type', 'application/json; charset=utf-8')
+
+    expect(body.message).toContain('Card number is incorrect')
   })
 })
 
-describe.skip('/card', () => {
+describe('probando ruta "/":POST para obtener tarjeta', () => {
   test('obteniendo datos de la tarjeta con token correcto', async () => {
-    const token: string = 'pk_test_6TaxUZzZUTTBKQg1'
     const { body } = await api
-      .get('/card')
-      .set('Authorization', `Bearer ${token}`)
+      .get('/')
+      .set('Authorization', `Bearer ${helper.tokenCorrect}`)
       .expect(200)
       .expect('Content-Type', 'application/json; charset=utf-8')
 
-    expect(body.message).toContain('consulta exitosa')
-  })
-  test('obteniendo datos de la tarjeta con token invalido', async () => {
-    const token: string = 'pk_test_ZsHm0mFIMMp3uD8Kasf32Q'
-    await api
-      .get('/card')
-      .set('Authorization', `Bearer ${token}`)
-      .expect(401)
-      .expect('Content-Type', 'application/json; charset=utf-8')
-  })
-  test('obteniendo datos de la tarjeta con token expirado', async () => {
-    const token: string = 'pk_test_ZsHm0mFIMMp3uD8K'
-    await api
-      .get('/card')
-      .set('Authorization', `Bearer ${token}`)
-      .expect(400)
-      .expect('Content-Type', 'application/json; charset=utf-8')
+    expect(body.data).toStrictEqual(helper.DBCard)
   })
   test('obteniendo datos de la tarjeta sin token', async () => {
-    await api
-      .get('/card')
-      .expect(403)
+    const { body } = await api
+      .get('/')
+      .expect(401)
       .expect('Content-Type', 'application/json; charset=utf-8')
+
+    expect(body.message).toBe('Acceso no autorizado')
+  })
+  test('obteniendo datos de la tarjeta con token exipiado', async () => {
+    const { body } = await api
+      .get('/')
+      .expect(400)
+      .set('Authorization', `Bearer ${helper.expiredToken}`)
+      .expect('Content-Type', 'application/json; charset=utf-8')
+
+    expect(body.message).toBe(helper.msgErrorToken)
+  })
+  test('obteniendo datos de la tarjeta con token invalido', async () => {
+    const { body } = await api
+      .get('/')
+      .expect(401)
+      .set('Authorization', `Bearer ${helper.tokenIncorrect}`)
+      .expect('Content-Type', 'application/json; charset=utf-8')
+
+    expect(body.message).toBe('Acceso no autorizado')
   })
 })
