@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import express from 'express'
-import { verifyToken } from './middleware/verifyToken/verifyToken'
+import { verifyToken } from './middleware/verifyToken'
 import * as controller from './cardController'
 import { verifyDataCard } from './middleware/verifiDataCard/verifyDataCard'
 
