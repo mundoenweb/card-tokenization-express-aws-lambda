@@ -3,7 +3,7 @@ import {
   Response as Res,
   Request as Req
 } from 'express'
-import createHttpError from 'http-errors'
+import createError from 'http-errors'
 
 export const error404 = (req: Req, _res: Res, next: Next): void => {
   if (req.body.error !== undefined) return next()
@@ -14,12 +14,13 @@ export const error404 = (req: Req, _res: Res, next: Next): void => {
     msg: 'ruta o metodo invalido'
   }
 
-  req.body.error = createHttpError(404, message)
-  next('route')
+  req.body.error = createError(404, message)
+  next()
 }
 
 export const handlerErrors = (req: any, res: Res): void => {
   const error = req.body.error
+  const err: any = typeof error.message === 'string' ? error : error.message
   res.status(error.status)
-  res.json(error)
+  res.json(err)
 }
