@@ -4,7 +4,7 @@ import * as controller from './cardController'
 
 const router = express.Router()
 
-router.get('/card', verifyTokenPay, controller.getCard)
-router.post('/card/token', controller.createToken)
+router.post('/', controller.createToken)
+router.get('/', verifyTokenPay, controller.getCard)
 
 export default router
