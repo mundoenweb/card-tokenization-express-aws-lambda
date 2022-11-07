@@ -10,8 +10,6 @@ import * as dataParse from './helper/helperValidatingCardFieldsAndParseData'
 export const verifyDataCard = (req: Req, _res: Res, next: Next): void => {
   const data: any = req.body
 
-  console.log(data)
-
   try {
     if (Object.keys(data).length === 0 || data === undefined) {
       throw new Error('Debe enviar todos los datos')
