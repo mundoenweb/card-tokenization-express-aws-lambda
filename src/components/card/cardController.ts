@@ -4,7 +4,6 @@ import {
   Response as Res
 } from 'express'
 import { genereteToken } from './utils/genereteToken'
-import { validateData } from './utils/validateData'
 import jwt from 'jsonwebtoken'
 import createHttpError from 'http-errors'
 import * as models from './cardModel'
@@ -14,14 +13,7 @@ import { newCard } from './types/interface'
 const SECRET_PASSWORD = 'secretPass.3467'
 
 const createToken = (req: Req, res: Res, next: Next): void => {
-  const card: newCard | string = validateData(req.body)
-
-  if (typeof card === 'string') {
-    req.body.error = createHttpError(400, card)
-    next()
-    return
-  }
-
+  const card: newCard = req.body
   const token: string = genereteToken()
   const config = { expiresIn: 900 }
 
