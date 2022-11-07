@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import createError from 'http-errors'
 import * as models from '../model/cardModel'
 import config from '../../../config/config'
-import { genereteToken } from '../helper/genereteToken/genereteToken'
+import { genereteToken } from '../helper/genereteToken'
 import { newCard } from '../types/interface'
 
 export const createTokenAndSaveCard = async (data: newCard): Promise<any> => {
@@ -32,7 +32,10 @@ export const getCardService = async (token: string): Promise<any> => {
     const message: string = 'La información que busca no existe o a expirado'
     const ISR: string = 'Internal Server Error'
     if (err.message === ISR) throw createError.InternalServerError(err)
-    if (err.message === 'jwt expired') await models.deleteCard(token)
+    if (err.message === 'jwt expired') {
+      await models.deleteCard(token)
+      throw createError.BadRequest(message)
+    }
     throw createError.BadRequest({ ...err, message })
   }
 }
