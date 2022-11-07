@@ -1,11 +1,11 @@
 import express from 'express'
-import { verifyTokenPay } from '../../middleware/verifyTokenPay'
+import { verifyToken } from './middleware/verifyToken/verifyToken'
 import * as controller from './cardController'
 import { verifyDataCard } from './middleware/verifiDataCard/verifyDataCard'
 
 const router = express.Router()
 
 router.post('/', verifyDataCard, controller.createToken)
-router.get('/', verifyTokenPay, controller.getCard)
+router.get('/', verifyToken, controller.getCard)
 
 export default router
