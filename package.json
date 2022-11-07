@@ -1,10 +1,14 @@
 {
-  "name": "card-tokenization",
+  "name": "card-tokenization-express-aws-lambda",
   "version": "1.0.0",
-  "description": "tokenización de tarjetas de credito y debito",
+  "description": "Proyecto de tokenización de tarjetas de credito/debito desarrollado en serverless para aws-lambda",
+  "main": "src/bin/www.ts",
   "keywords": [
     "card",
-    "tokenization"
+    "tokenization",
+    "serverless",
+    "aws-lambda",
+    "express"
   ],
   "author": "mundoenweb@gmail.com",
   "license": "ISC",
@@ -12,7 +16,7 @@
     "dev": "ts-node-dev src/bin/www.ts",
     "lint": "ts-standard",
     "tsc": "tsc",
-    "test": "jest --verbose --watch"
+    "test": "jest --verbose"
   },
   "devDependencies": {
     "@types/express": "4.17.14",
