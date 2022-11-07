@@ -25,6 +25,3 @@ export const verifyToken = (req: Req, _res: Res, next: Next): void => {
   req.body.token = token
   next()
 }
-
-// req.body.error = createHttpError(401, 'token invalido')
-// return next('route')
