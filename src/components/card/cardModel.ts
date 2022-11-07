@@ -1,42 +1,35 @@
+import { Collection, Db, WithId } from 'mongodb'
 import { client } from '../../config/connection'
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-async function modelCreateToken (token: string, cardToken: string | undefined) {
+export const saveCardModel = async (token: string, cardToken: string): Promise<void> => {
   try {
     await client.connect()
-    const db = client.db('cards')
-    const cards = db.collection('cards')
-    const data = await cards.insertOne({ token, cardToken })
+    const db: Db = client.db('cards')
+    const cards: Collection = db.collection('cards')
+    await cards.insertOne({ token, cardToken })
+  } finally {
+    await client.close()
+  }
+}
+
+export const getCardModel = async (token: string): Promise<any | null> => {
+  try {
+    await client.connect()
+    const db: Db = client.db('cards')
+    const cards: Collection = db.collection('cards')
+    const data: WithId<any> = await cards.findOne({ token })
     return data
   } finally {
     await client.close()
   }
 }
-
-async function modelGetCard (token: string): Promise<any> {
+export const deleteCard = async (token: string): Promise<void> => {
   try {
     await client.connect()
-    const db = client.db('cards')
-    const cards = db.collection('cards')
-    const data = await cards.findOne({ token })
-    return data !== null ? [data] : []
+    const db: Db = client.db('cards')
+    const cards: Collection = db.collection('cards')
+    await cards.deleteOne({ token })
   } finally {
     await client.close()
   }
-}
-async function deleteCard (token: string): Promise<any> {
-  try {
-    await client.connect()
-    const db = client.db('cards')
-    const cards = db.collection('cards')
-    return await cards.deleteOne({ token })
-  } finally {
-    await client.close()
-  }
-}
-
-export {
-  modelCreateToken,
-  modelGetCard,
-  deleteCard
 }
