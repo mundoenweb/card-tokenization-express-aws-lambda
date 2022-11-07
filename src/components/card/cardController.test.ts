@@ -1,6 +1,6 @@
-import { app } from '../../../index'
+import { app } from '../../index'
 import supertest from 'supertest'
-import * as helper from './helperTest'
+import * as helper from './helper/helperTest'
 
 const api = supertest(app)
 
